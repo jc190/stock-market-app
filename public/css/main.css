@@ -1,0 +1,46 @@
+html {
+  position: relative;
+  min-height: 100%;
+  height: 100%; }
+
+body {
+  background-color: #f1f1f1;
+  margin-bottom: 60px; }
+
+nav .navbar-brand span {
+  letter-spacing: 2px;
+  font-size: 1.1rem;
+  color: #333333;
+  font-weight: 400; }
+
+nav .navbar-brand svg > path {
+  fill: #888888; }
+
+.shadow-level--1 {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+
+.chart-container {
+  position: relative;
+  height: 500px;
+  width: 100%; }
+
+.card {
+  position: relative;
+  overflow: hidden;
+  z-index: 0; }
+  .card p {
+    margin-bottom: 0; }
+
+.card-color--side {
+  position: absolute;
+  height: 100%;
+  width: .5rem;
+  background-color: #ff6384; }
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  line-height: 60px;
+  background-color: #e2e2e2; }

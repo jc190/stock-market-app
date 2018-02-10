@@ -1,11 +1,21 @@
-doctype html
-html(lang='en')
-  include includes/head.pug
-  body
-    header
-      include includes/navbar.pug
-    h1.text-center Hello, world!
-    noscript This website relies on Javascript to work. Please turn it on and refresh the page.
-    // Optional JavaScript
-    include includes/footer.pug
-    
+extends includes/layout.pug
+
+block append content
+  .container-fluid.bg-light
+    .chart-container
+      canvas#stock-chart
+  .container-fluid.pt-4
+    .row
+      .col-sm-4
+        .card.shadow-level--1
+          .card-color--side
+          .card-body
+            button.close(type='button', aria-label='Close')
+              span(aria-hidden='true') ×
+            h5.title AMZN
+            p.text-muted Amazon.com, Inc.
+
+block scripts
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js')
+  script(src='/common/ajax-functions.js')
+  script(src='/controllers/chartController.client.js')
