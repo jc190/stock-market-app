@@ -2,6 +2,6 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-white.shadow-level--1
   a.navbar-brand(href='#')
     i.fas.fa-chart-line.mr-2
     span Stock Market App
-  form.form-inline.my-2.my-lg-0.ml-auto
-    input.form-control.mr-sm-2(type='search', placeholder='(e.g. AMZN, or Amazon)', aria-label='Search')
+  form.form-inline.my-2.my-lg-0.ml-auto(name='add-stock' action='/stocks', type='POST')
+    input.form-control.mr-sm-2(name='search' type='search', placeholder='(e.g. AMZN, or Amazon)', aria-label='Search')
     button.btn.btn-outline-success.my-2.my-sm-0(type='submit') Add Stock
