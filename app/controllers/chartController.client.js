@@ -1,21 +1,20 @@
 'use strict';
 
 (function () {
+  var socket = io.connect('http://localhost:8080');
   var ctx = document.getElementById('stock-chart').getContext('2d');
-  
-  var chart = initChart();
 
-  ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET', '/common/mock.json', function (response) {
-    var parsedResponse = JSON.parse(response);
-    chart.data.datasets[0].data = parsedResponse.dataset_data.data.map(function (item) {
-      chart.data.labels.push(item[0])
-      return {
-        x: item[0],
-        y: item[1]
-      }
-    });
-    chart.update();
-  }));
+  var palette = ['rgb(255, 0, 41)', 'rgb(55, 126, 184)', 'rgb(102, 166, 30)', 'rgb(152, 78, 163)', 'rgb(0, 210, 213)', 'rgb(255, 127, 0)'];
+
+  Chart.defaults.global.elements.point.radius = 0;
+
+  var chart = initChart();
+  reloadChart(chart, addCloseButtons);
+
+  socket.on('reloadChart', function () {
+
+    reloadChart(chart, addCloseButtons);
+  });
 
   function initChart () {
     var options = {
@@ -47,25 +46,83 @@
         }]
       },
       tooltips: {
+        enabled: true,
         intersect: false
       }
     };
     var data = {
       labels: [],
-      datasets: [{
-        label: "AMZN",
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgb(255, 99, 132)',
-        data: [0, 10, 5, 2, 20, 30, 45],
-        lineTension: 0,
-        fill: false,
-      }]
+      datasets: []
     };
     return new Chart(ctx, {
       type: 'line',
       data: data,
       options: options
     });
+  }
+
+  function reloadChart (chart, cb) {
+    $('#chartLabels').empty();
+    ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET', '/stocks', function (response) {
+      var parsedResponse = JSON.parse(response);
+      var stockData;
+      chart.data.datasets = parsedResponse.stocks.map(function (stock, i) {
+        stockData = stock.data.map(function (d) {
+          return {
+            x: d[0],
+            y: d[1]
+          }
+        });
+        $('#chartLabels').append(
+          `
+          <div class="col-sm-4">
+            <div class="card shadow-level--1">
+              <div class="card-color--side" style="background-color: ${palette[i]};"></div>
+              <div class="card-body">
+                <button class="close close-stock" type="button" data-symbol="${stock.symbol}">
+                  <span>&times;</span>
+                </button>
+                <h5 class="title">${stock.symbol}</h5>
+                <p class="text-muted">${stock.name}</p>
+              </div>
+            </div>
+          </div>
+          `
+        )
+        return {
+          label: stock.symbol,
+          lineTension: 0,
+          fill: false,
+          backgroundColor: palette[i],
+          borderColor: palette[i],
+          data: stockData
+        }
+      })
+      chart.update();
+      if (cb) {
+        cb();
+      }
+    }));
+  }
+
+  function addCloseButtons () {
+    var closeButtons = document.querySelectorAll('.close-stock');
+
+    for(var i = 0; i < closeButtons.length; i++) {
+      closeButtons[i].addEventListener('click', function (e) {
+        e.preventDefault();
+        var url = 'http://localhost:3000/stocks?s=' + this.dataset.symbol
+        ajaxFunctions.ready(ajaxFunctions.ajaxRequest('DELETE', url, function(response) {
+          response = JSON.parse(response);
+          if (response.error) {
+            toastr.error(response.error);
+          }
+          if (response.ok) {
+            toastr.success(response.ok);
+          }
+        }));
+      });
+    }
   }
 
 })();

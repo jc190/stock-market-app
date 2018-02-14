@@ -5,7 +5,7 @@ block append content
     .chart-container
       canvas#stock-chart
   .container-fluid.pt-4
-    .row
+    #chartLabels.row
       .col-sm-4
         .card.shadow-level--1
           .card-color--side
@@ -16,7 +16,9 @@ block append content
             p.text-muted Amazon.com, Inc.
 
 block scripts
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js')
   script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js')
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js')
   script(src='/common/ajax-functions.js')
   script(src='/controllers/chartController.client.js')
   script(src='/controllers/addStockController.client.js')
