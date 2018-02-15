@@ -25,10 +25,10 @@
   formElement.addEventListener('submit', function (e) {
     e.preventDefault();
 
+    $('.loader').addClass('active');
+
     var formValue = formElement.elements.search.value;
     var url = formElement.action + '?s=' + formValue;
-    
-    // Disable button to prevent multiple requests
 
     ajaxFunctions.ready(ajaxFunctions.ajaxRequest('POST', url, function(response) {
       response = JSON.parse(response);

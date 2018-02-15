@@ -1,19 +1,12 @@
 extends includes/layout.pug
 
 block append content
+  .loader
   .container-fluid.bg-light
     .chart-container
       canvas#stock-chart
   .container-fluid.pt-4
     #chartLabels.row
-      .col-sm-4
-        .card.shadow-level--1
-          .card-color--side
-          .card-body
-            button.close(type='button', aria-label='Close')
-              span(aria-hidden='true') ×
-            h5.title AMZN
-            p.text-muted Amazon.com, Inc.
 
 block scripts
   script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js')

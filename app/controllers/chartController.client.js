@@ -12,7 +12,6 @@
   reloadChart(chart, addCloseButtons);
 
   socket.on('reloadChart', function () {
-
     reloadChart(chart, addCloseButtons);
   });
 
@@ -62,10 +61,12 @@
   }
 
   function reloadChart (chart, cb) {
+    $('.loader').addClass('active');
     $('#chartLabels').empty();
     ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET', '/stocks', function (response) {
       var parsedResponse = JSON.parse(response);
       var stockData;
+      console.log(parsedResponse)
       chart.data.datasets = parsedResponse.stocks.map(function (stock, i) {
         stockData = stock.data.map(function (d) {
           return {
@@ -111,6 +112,7 @@
     for(var i = 0; i < closeButtons.length; i++) {
       closeButtons[i].addEventListener('click', function (e) {
         e.preventDefault();
+        $('.loader').addClass('active');
         var url = 'http://localhost:3000/stocks?s=' + this.dataset.symbol
         ajaxFunctions.ready(ajaxFunctions.ajaxRequest('DELETE', url, function(response) {
           response = JSON.parse(response);
@@ -123,6 +125,7 @@
         }));
       });
     }
+    $('.loader').removeClass('active');
   }
 
 })();
