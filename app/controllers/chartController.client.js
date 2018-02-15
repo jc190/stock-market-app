@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var socket = io.connect('http://localhost:8080');
+  var socket = io.connect(window.location.href);
   var ctx = document.getElementById('stock-chart').getContext('2d');
 
   var palette = ['rgb(255, 0, 41)', 'rgb(55, 126, 184)', 'rgb(102, 166, 30)', 'rgb(152, 78, 163)', 'rgb(0, 210, 213)', 'rgb(255, 127, 0)'];
