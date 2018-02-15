@@ -113,7 +113,7 @@
       closeButtons[i].addEventListener('click', function (e) {
         e.preventDefault();
         $('.loader').addClass('active');
-        var url = 'http://localhost:3000/stocks?s=' + this.dataset.symbol
+        var url = window.location.href + 'stocks?s=' + this.dataset.symbol
         ajaxFunctions.ready(ajaxFunctions.ajaxRequest('DELETE', url, function(response) {
           response = JSON.parse(response);
           if (response.error) {
